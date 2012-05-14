@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
     #   render "new"
     # end
     
-    user = User.find(params[:user_id])
+    user = User.find_by_name(params[:name])
     if user
       session[:user_id] = user.id
       redirect_to root_url, :notice => "Logged in!"

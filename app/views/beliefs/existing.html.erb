@@ -1,11 +1,9 @@
-<h1>Your beliefs</h1>
+<h1>All beliefs you don't hold</h1>
 
 <table>
   <tr>
     <th>Title</th>
     <th>Description</th>
-    <th></th>
-    <th></th>
     <th></th>
   </tr>
 
@@ -13,9 +11,7 @@
   <tr>
     <td><%= belief.title %></td>
     <td><%= belief.description %></td>
-    <td><%= link_to 'Show', belief %></td>
-    <td><%= link_to 'Edit', edit_belief_path(belief) %></td>
-    <td><%= link_to 'Destroy', belief, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Add', belief, :method => :add %></td
   </tr>
 <% end %>
 </table>

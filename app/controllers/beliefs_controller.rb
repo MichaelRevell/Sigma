@@ -41,24 +41,34 @@ class BeliefsController < ApplicationController
   # POST /beliefs.json
   def create
     if(current_user)
-      @belief = Belief.new(params[:belief])
-      current_user.beliefs << @belief
-      @belief.users << current_user
-      current_user.save
+      @belief = Belief.find_by_title(params[:title]) 
       
-      respond_to do |format|
-        if @belief.save
-          format.html { redirect_to @belief, :notice => 'Belief was successfully created.' }
-          format.json { render :json => @belief, :status => :created, :location => @belief }
-        else
+      if @belief == nil
+        @belief = Belief.new(params[:belief])
+        current_user.beliefs << @belief
+        @belief.users << current_user
+        current_user.update
+      
+        respond_to do |format|
+          if @belief.save
+            format.html { redirect_to @belief, :notice => 'Belief was successfully created.' }
+            format.json { render :json => @belief, :status => :created, :location => @belief }
+          else
+            format.html { render :action => "new" }
+            format.json { render :json => @belief.errors, :status => :unprocessable_entity }
+          end
+        end
+      else
+        format.html { render :action => "new", :notice => 'Please Log in.' }
+      end
+      
+      else
+        @belief.errors << "Please go to page to add existing belief"
+        respond_to do |format|
           format.html { render :action => "new" }
           format.json { render :json => @belief.errors, :status => :unprocessable_entity }
         end
       end
-    else
-      format.html { render :action => "new", :notice => 'Please Log in.' }
-    end
-
   end
 
   # PUT /beliefs/1
@@ -88,4 +98,28 @@ class BeliefsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  def existing
+     @beliefs = Belief.all
+     #@non_beliefs = current_user.beliefs
+     
+     # Beliefs you don't hold
+     #@beliefs = @beliefs - @non_beliefs
+  end
+  
+  def add
+     @belief = Belief.find(params[:id])
+     current_user.beliefs << @belief
+     
+
+     respond_to do |format|
+       if @belief.update
+         format.html { redirect_to @belief, :notice => 'Belief was successfully added.' }
+         format.json { head :no_content }
+       else
+         format.html { render :action => "edit" }
+         format.json { render :json => @belief.errors, :status => :unprocessable_entity }
+       end
+     end
+   end
 end
