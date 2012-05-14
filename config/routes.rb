@@ -1,4 +1,10 @@
 Sigma::Application.routes.draw do
+  get "sessions/new"
+
+  root :to => 'home#index'
+
+  get "home/add_beliefs"
+
   resources :beliefs
 
   resources :users
