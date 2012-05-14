@@ -2,7 +2,7 @@ class BeliefsController < ApplicationController
   # GET /beliefs
   # GET /beliefs.json
   def index
-    @beliefs = Belief.all
+    @beliefs = current_user.beliefs.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -40,17 +40,25 @@ class BeliefsController < ApplicationController
   # POST /beliefs
   # POST /beliefs.json
   def create
-    @belief = Belief.new(params[:belief])
-
-    respond_to do |format|
-      if @belief.save
-        format.html { redirect_to @belief, :notice => 'Belief was successfully created.' }
-        format.json { render :json => @belief, :status => :created, :location => @belief }
-      else
-        format.html { render :action => "new" }
-        format.json { render :json => @belief.errors, :status => :unprocessable_entity }
+    if(current_user)
+      @belief = Belief.new(params[:belief])
+      current_user.beliefs << @belief
+      @belief.users << current_user
+      current_user.save
+      
+      respond_to do |format|
+        if @belief.save
+          format.html { redirect_to @belief, :notice => 'Belief was successfully created.' }
+          format.json { render :json => @belief, :status => :created, :location => @belief }
+        else
+          format.html { render :action => "new" }
+          format.json { render :json => @belief.errors, :status => :unprocessable_entity }
+        end
       end
+    else
+      format.html { render :action => "new", :notice => 'Please Log in.' }
     end
+
   end
 
   # PUT /beliefs/1

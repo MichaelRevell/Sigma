@@ -6,6 +6,7 @@ gem 'rails', '3.2.3'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'neo4j', '2.0.0'
+gem 'neo4j-admin', :git => "git://github.com/andreasronge/neo4j-admin.git"
 
 group :development do
   gem 'rspec-rails'
