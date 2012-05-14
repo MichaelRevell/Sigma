@@ -37,8 +37,7 @@
     <% end %>
     
     <% 
-    @x = 20
-    @y = 20
+
     @users.each do |user| %>
     sigInst.addNode('<%= user.name %>', {
         x: <%= rand(40)+15 %>,
@@ -49,6 +48,17 @@
     });
     <% end %>
     
+    
+     <% 
+     @x = 1
+      @users.each do |user| 
+      user.beliefs.each do |belief| %>
+      sigInst.addEdge("edge<%= @x %>", "<%= user.name %>", "<%= belief.title %>");
+      <% 
+      @x = @x + 1
+      end
+      end %>
+
     
     sigInst.draw
     
