@@ -1,4 +1,6 @@
 Sigma::Application.routes.draw do
+  resources :beliefs
+
   resources :users
 
   # The priority is based upon order of creation:
