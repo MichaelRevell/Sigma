@@ -7,6 +7,7 @@ Sigma::Application.routes.draw do
   root :to => 'home#index'
 
   get "home/add_beliefs"
+  get "home/display", :as => "display"
   get "beliefs/existing"
 
   resources :beliefs

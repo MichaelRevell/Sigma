@@ -1,0 +1,55 @@
+<link rel="stylesheet" href=
+    "http://dl.dropbox.com/u/148605/wireframes/less/bootstrap/bootstrap.css"
+    type="text/css">
+    <script type='text/javascript' src=
+    'https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'>
+</script>
+  </head>
+  <body class='container'>
+    <div class='row'>
+      <div class="span12 sigma-parent" id="sigma-example-parent">
+        <div class="sigma-expand" id="sigma-example"></div>
+      </div>
+    </div>
+    <script type='text/javascript' src=
+    'http://sigmajs.org/js/sigma.min.js'>
+</script>
+<style type="text/css">
+#sigma-example-parent{ background-color: red;}
+#sigma-example { height:700px;}
+</style>
+<script type='text/javascript'>
+
+    var sigRoot = document.getElementById('sigma-example');
+
+    var sigInst = sigma.init(sigRoot);
+    
+    <% 
+
+    @beliefs.each do |belief| %>
+    sigInst.addNode('<%= belief.title %>', {
+        x: <%= rand(40)+15 %>,
+        y: <%= rand(40)+15  %>,
+        label: '<%= belief.title %>',
+        color: '#008',
+        size: <%= rand(20)+8 %> 
+    });
+    <% end %>
+    
+    <% 
+    @x = 20
+    @y = 20
+    @users.each do |user| %>
+    sigInst.addNode('<%= user.name %>', {
+        x: <%= rand(40)+15 %>,
+        y: <%= rand(40)+14 %>,
+        label: '<%= user.name %>',
+        color: '#080',
+        size: <%= rand(20)+8 %>
+    });
+    <% end %>
+    
+    
+    sigInst.draw
+    
+    </script>
