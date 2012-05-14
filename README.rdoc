@@ -28,7 +28,9 @@ Also, remember that there is no need to migrate the database as this is a graph 
 == How to install the app
 
 1) Clone into Sigma 
+
 2) bundle install
+
 3) rails s
 
 It's as easy as that.
