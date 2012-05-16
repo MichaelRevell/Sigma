@@ -2,7 +2,7 @@ class BeliefsController < ApplicationController
   # GET /beliefs
   # GET /beliefs.json
   def index
-    @beliefs = current_user.beliefs.all
+    @beliefs = current_user.beliefs
 
     respond_to do |format|
       format.html # index.html.erb
@@ -40,7 +40,7 @@ class BeliefsController < ApplicationController
   # POST /beliefs
   # POST /beliefs.json
   def create
-    if(current_user)
+    if(current_user.id)
       @belief = Belief.find_by_title(params[:title]) 
       
       if @belief == nil
@@ -63,7 +63,7 @@ class BeliefsController < ApplicationController
       end
       
       else
-        @belief.errors << "Please go to page to add existing belief"
+        #@belief.errors << "Please go to page to add existing belief"
         respond_to do |format|
           format.html { render :action => "new" }
           format.json { render :json => @belief.errors, :status => :unprocessable_entity }
