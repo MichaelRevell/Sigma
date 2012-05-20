@@ -10,4 +10,14 @@ class Belief < Neo4j::Rails::Model
   
   has_n(:beliefs)
 
+  public
+
+  def self.generate_beliefs (belief_count)
+    beliefs=Array.new { }
+    for i in 0..belief_count-1
+      beliefs[i] = "b#{i}"
+    end
+    return beliefs
+  end
+
 end
