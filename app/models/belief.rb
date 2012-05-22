@@ -4,11 +4,13 @@ class Belief < Neo4j::Rails::Model
   validates :title, :uniqueness => true
   property :description, :type => String
   
-  has_n(:users)
+  #has_n(:users)
   #has_n(:related_beliefs).to(Belief).relationship(Connection)
   #has_n(:rel_beliefs).from(Belief, :related_beliefs)
   
-  has_n(:beliefs)
+  #has_n(:peer, :type=> Belef)
+  #has_n(:denpendencies)
+  #has_n(:dependents)
 
   public
 

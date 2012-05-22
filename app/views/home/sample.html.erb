@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Belief v0.1 - jsFiddle demo by danieleli</title>
+  <link href="../wireframes/less/bootstrap/bootstrap.css" rel="stylesheet" type="text/css" />
+  <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
+  <script type="text/javascript" src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+  <script type='text/javascript' src="http://sigmajs.org/js/sigma.min.js"></script>
+  <script type='text/javascript' src="sigma.forceatlas2.js"></script>
+  <style type='text/css'>
+    #sigmaroot
+    {
+      height: 500px;
+      background: #222;
+    }
+  </style>
+  <script type='text/javascript'>//<![CDATA[
+        $(function () {
+
+          var sigRoot = document.getElementById('sigmaroot');
+          var sigInst = sigma.init(sigRoot).drawingProperties({ defaultLabelColor: '#fff' });
+
+          var addEdges = function () {
+            $.getJSON("edges.json", function (edges) {
+              for (var i = 0; i < edges.length; i++) {
+                sigInst.addEdge(edges[i].Label, edges[i].Source, edges[i].Target, { 'weight': edges[i].Weight, 'size': edges[i].Weight });
+                $('#edges table tbody').append('<tr><td>' + edges[i].Label + '</td><td>' + edges[i].Weight + '</td></tr>');
+              }
+
+              sigInst.position(0, 0, 1).draw();
+
+            });
+          };
+
+          var addBeliefs = function () {
+            $.getJSON("beliefs.json", function (beliefs) {
+              for (var i = 0; i < beliefs.length; i++) {
+                sigInst.addNode(beliefs[i].Id, {
+                  label: beliefs[i].Label,
+                  color: 'rgb(' + Math.round(Math.random() * 256) + ',' +
+                      Math.round(Math.random() * 256) + ',' +
+                      Math.round(Math.random() * 256) + ')',
+                  size: beliefs[i].Believers,
+                  x: Math.random(),
+                  y: Math.random()
+                });
+                $('#beliefs table tbody').append('<tr><td>' + beliefs[i].Label + '</td><td>' + beliefs[i].Believers + '</td></tr>');
+                console.log('adding node' + beliefs[i].Label);
+              }
+              addEdges();
+            });
+          };
+
+
+          var isRunning = false;
+          document.getElementById('stop-layout').addEventListener('click', function () {
+            if (isRunning) {
+              isRunning = false;
+              sigInst.stopForceAtlas2();
+              document.getElementById('stop-layout').childNodes[0].nodeValue = 'Start Layout';
+            } else {
+              isRunning = true;
+              sigInst.startForceAtlas2();
+              document.getElementById('stop-layout').childNodes[0].nodeValue = 'Stop Layout';
+            }
+          }, true);
+          document.getElementById('rescale-graph').addEventListener('click', function () {
+            console.log('rescale');
+            sigInst.position(0, 0, 1).draw();
+          }, true);
+
+          addBeliefs();
+        });
+
+
+	//]]>  
+
+  </script>
+</head>
+<body class='container'>
+  <div class='row'>
+    <div class="span12 buttons-container">
+      <button class="btn" id="stop-layout">Start Layout</button>
+      <button class="btn" id="rescale-graph">Rescale Graph</button>
+    </div>
+    <div class='row'>
+      <div id='sigmaroot'>
+      </div>
+    </div>
+  </div>
+  <div id='data'>
+    <div id='beliefs'>
+      <table class="table">
+        <thead>
+          <tr>
+            <td>Belief</td>
+            <td>Believers</td>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+    <div id='edges'>
+      <table class="table">
+        <thead>
+          <tr>
+            <td>Connection</td>
+            <td>Weight</td>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <style>
+    #beliefs, #edges
+    {
+      display: inline-block;
+      width: 40%;
+      margin: 10px;
+      vertical-align: top;
+    }
+
+    #beliefs div, #edges div
+    {
+      margin: 10px;
+      display: inline-block;
+    }
+  </style>
+</body>
+</html>
